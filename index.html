@@ -1,489 +1,95 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Создание договора</title>
-<script src="https://cdn.jsdelivr.net/npm/html2pdf.js@0.10.1/dist/html2pdf.bundle.min.js"></script>
-<style>
-  #pdfPreview iframe {
-    width: 100%;
-    height: 80vh;
-    border: none;
-  }
-  body {
-    background-color: rgb(150, 78, 245);
-    font-family: Arial, sans-serif;
-   
-    font-size: 14px;
-  }
-  h1 {
-    text-align: center;
-   
-  }
-  form {
-    max-width: 600px;
-    margin: 0 auto 20px auto;
-  }
-  label {
-    display: block;
-    margin-top: 10px;
-  }
-  input, select {
-    background-color: rgb(218, 128, 125);
-    width: 100%;
-    padding: 8px;
-    box-sizing: border-box;
-  }
-  button {
-    background-color: rgb(223, 199, 68);
-    margin-top: 15px;
-    padding: 10px 20px;
-    cursor: pointer;
-  }
-  #pdfPreview {
-    margin-top: 20px;
-  }
-  #itemsTable {
-    width: 100%;
-    border-collapse: collapse;
-    overflow-x: auto;
-    display: block;
-  }
-  #itemsTable th, #itemsTable td {
-    border: 1px solid #000;
-    padding: 5px;
-    text-align: center;
-    min-width: 50px;
-  }
-  .deleteBtn {
-    background: none;
-    border: none;
-    color: red;
-    font-size: 20px;
-    line-height: 1;
-    cursor: pointer;
-    padding: 0;
-    margin: 0;
-  }
-  #discountCheckbox {
-    appearance: none;
-    -webkit-appearance: none;
-    width: 25px;
-    height: 25px;
-    border: 2px solid #ccc;
-    border-radius: 3px;
-    background-color: rgb(218, 128, 125);
-    cursor: pointer;
-    position: relative;
-  }
-  #discountCheckbox:checked {
-    background-color: #1974ec;
-    border-color: #4CAF50;
-  }
-  #discountCheckbox:checked::after {
-    content: '';
-    position: absolute;
-    top: 2px;
-    left: 6px;
-    width: 6px;
-    height: 12px;
-    border: solid rgb(138, 27, 27);
-    border-width: 0 2px 2px 0;
-    transform: rotate(45deg);
-  }
-  
-</style>
+  <meta charset="UTF-8" />
+  <title>Создание договора</title>
+  <script src="https://cdn.jsdelivr.net/npm/html2pdf.js@0.10.1/dist/html2pdf.bundle.min.js"></script>
+  <!-- <link rel="stylesheet" href="index.css"> -->
 </head>
 <body>
-
-<h1>Создать договор</h1>
-
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+    background-color: rgb(78, 95, 245);
+    
+    
+    }
+    h1 {
+      text-align: center;
+    }
+    form {
+      max-width: 700px;
+      margin: auto;
+     
+    }
+    label {
+      display: block;
+     font-size: 35px;
+  
+      margin-bottom: 10px;
+    }
+    input, textarea, select {
+      width: 100%;
+         background-color: rgb(218, 128, 125);  
+      padding: 10px;
+      box-sizing: border-box;
+      margin-top: 5px;
+      font-size: 35px;
+    }
+    button {
+      background-color: rgb(223, 199, 68);
+      margin-top: 20px;
+      padding: 12px 24px;
+      font-size: 35px;
+      cursor: pointer;
+    }
+  </style>
+<h1>Форма для создания договора</h1>
 <form id="contractForm">
+  <!-- поля формы -->
   <label>
-    <p>Наим услуги:</p>
-    <input type="text" id="serviceName" placeholder="Наим" required>
+    <p> Наименование услуги:</p>
+    <input  id="serviceName" placeholder="Наименование" required>
   </label>
   <label>
-    <p>Дата:</p>
+    <p>Дата (день месяц год):</p>
     <input type="date" id="date" required>
   </label>
   <label>
-    <p>Кол-во:</p>
+    <p> Количество:</p>
     <input type="number" id="quantity" min="0" required>
   </label>
   <label>
-    <p>Ед:</p>
+    <p>Единица измерения:</p>
     <select id="unit" required>
       <option value="т">т</option>
       <option value="м3">м3</option>
-       <option value="м3">шт</option>
     </select>
   </label>
   <label>
-    <p>Сумма (руб):</p>
+    <p> Сумма (руб):</p>
     <input type="number" id="amount" min="0" required>
   </label>
   <label>
-    <p>Имя заказчика:</p>
+    <p>Заказчик имя:</p>
     <input type="text" id="customer" placeholder="Иванов И И" required>
   </label>
   <label>
-    <p>Адрес:</p>
+    <p> Адрес:</p>
     <input type="text" id="address" placeholder="Новотрактовая, 13" required>
   </label>
   <label>
     <p>Телефон заказчика:</p>
     <input type="tel" id="customerPhone" placeholder="8-900-00-00" required>
   </label>
-  
-  <h3>Добавить позиции товаров/услуг</h3>
-  
-  <button type="button" onclick="showAddItemForm()">Добавить товар/услугу</button>
-  
-  <!-- Форма для добавления товаров -->
-  <div id="additionalItemForm" style="display:none; margin-top:10px; padding:10px; border:1px solid #ccc; font-size:13px;">
-    <label>
-      <p>Материал:</p>
-      <input type="text" id="extraServiceName" placeholder="Наим" style="width:70%; display:inline-block;">
-    </label>
-    <label>
-      <p>Кол-во:</p>
-      <input type="number" id="extraQuantity" min="0" style="width:70%; display:inline-block;">
-    </label>
-    <label>
-      <p>Ед:</p>
-      <select id="extraUnit" style="width:70%; display:inline-block;">
-        <option value="т">т</option>
-        <option value="м3">м3</option>
-      </select>
-    </label>
-    <label>
-      <p>Сумма:</p>
-      <input type="number" id="extraAmount" min="0" style="width:70%; display:inline-block;">
-    </label>
-    <button type="button" onclick="addItem()" style="margin-top:5px;">Добавить</button>
-  </div>
-  
-  <div style="overflow-x:auto;">
-    <table id="itemsTable" style="width:100%; margin-top:10px;">
-      <thead>
-        <tr>
-          <th>№</th>
-          <th>Материал</th>
-          <th>Кол-во</th>
-          <th>Ед</th>
-          <th>Сумма, руб.</th>
-          <th>удал</th>
-        </tr>
-      </thead>
-      <tbody id="itemsBody"></tbody>
-    </table>
-  </div>
-  
-  <!-- Галочка для скидки -->
-  <label style="margin-top:10px; display:flex; justify-content: space-around;">
-    <input type="checkbox"  id="discountCheckbox" onchange="updatePreview()"> <span style="margin-left:8px;">5% скидка при предоставлении карты №</span>
-  </label>
-  
-  <button type="button" onclick="downloadPdf()">Создать договор</button>
-  <button type="button" onclick="previewPdf()">Предварительный просмотр</button>
+  <!-- кнопки -->
+  <button type="button" onclick="downloadPdf()">Создать договор (скачать)</button>
+  <!-- <button type="button" onclick="previewPdf()">Предварительный просмотр</button> -->
 </form>
 
-<div id="pdfPreview"></div>
+<div id="pdfPreview" style="margin-top:20px; border:1px solid #ccc; padding:10px; max-height:400px; overflow:auto;"></div>
 
 <script>
-let items=[];
-
-// Функции для работы с добавлением товаров
-function showAddItemForm() {
-  document.getElementById('additionalItemForm').style.display='block';
-  document.getElementById('extraServiceName').value='';
-  document.getElementById('extraQuantity').value='';
-  document.getElementById('extraUnit').value='т';
-  document.getElementById('extraAmount').value='';
-}
-
-function addItem() {
-  const name = document.getElementById('extraServiceName').value.trim();
-  const quantity = document.getElementById('extraQuantity').value;
-  const unit = document.getElementById('extraUnit').value;
-  const amount = document.getElementById('extraAmount').value;
-  if(!name || !quantity || !amount){
-    alert('Пожалуйста, заполните все поля для товара/услуги.');
-    return;
-  }
-  items.push({ serviceName: name, quantity: quantity, unit: unit, amount: amount });
-  updateItemsTable();
-  document.getElementById('additionalItemForm').style.display='none';
-  updatePreview();
-}
-
-function updateItemsTable() {
-  const tbody=document.getElementById('itemsBody');
-  tbody.innerHTML='';
-  items.forEach( (item, index)=> {
-    const row=document.createElement('tr');
-
-    const cellNum=document.createElement('td');
-    cellNum.textContent= index+1;
-    row.appendChild(cellNum);
-
-    const cellName=document.createElement('td');
-    cellName.textContent= item.serviceName;
-    row.appendChild(cellName);
-
-    const cellQty=document.createElement('td');
-    cellQty.textContent= item.quantity;
-    row.appendChild(cellQty);
-
-    const cellUnit=document.createElement('td');
-    cellUnit.textContent= item.unit;
-    row.appendChild(cellUnit);
-
-    const cellAmount=document.createElement('td');
-    cellAmount.textContent= item.amount;
-    row.appendChild(cellAmount);
-
-    const cellAction=document.createElement('td');
-    const btnDel=document.createElement('button');
-    btnDel.innerHTML='×';
-    btnDel.className='deleteBtn';
-    btnDel.title='Удалить';
-    btnDel.onclick= ()=> {
-      items.splice(index,1);
-      updateItemsTable();
-      updatePreview();
-    };
-    cellAction.appendChild(btnDel);
-    row.appendChild(cellAction);
-
-    tbody.appendChild(row);
-  });
-}
-
-function getFormData() {
-  const serviceName=document.getElementById('serviceName').value.trim();
-  const dateInput=document.getElementById('date').value;
-  const quantity=document.getElementById('quantity').value;
-  const unit=document.getElementById('unit').value;
-  const amount=document.getElementById('amount').value;
-  const customer=document.getElementById('customer').value.trim();
-  const address=document.getElementById('address').value.trim();
-  const customerPhone=document.getElementById('customerPhone').value.trim();
-
-  const dateObj=new Date(dateInput);
-  if(isNaN(dateObj)){
-    alert('Пожалуйста, выберите правильную дату.');
-    return null;
-  }
-
-  const options={ day: 'numeric', month: 'long', year: 'numeric' };
-  const formattedDate=dateObj.toLocaleDateString('ru-RU', options);
-  const day=dateObj.getDate();
-  const monthLong=dateObj.toLocaleString('ru-RU',{ month:'long' });
-  const year=dateObj.getFullYear();
-
-  return {
-    serviceName,
-    dateObj,
-    formattedDate,
-    day,
-    monthLong,
-    year,
-    quantity,
-    unit,
-    amount,
-    customer,
-    address,
-    customerPhone
-  };
-}
-
-function getAllItems() {
-  const mainServiceName=document.getElementById('serviceName').value.trim();
-  const mainQuantity=document.getElementById('quantity').value;
-  const mainUnit=document.getElementById('unit').value;
-  const mainAmount=document.getElementById('amount').value;
-
-  const allItems=[];
-
-  if(mainServiceName){
-    allItems.push({
-      serviceName: mainServiceName,
-      quantity: mainQuantity,
-      unit: mainUnit,
-      amount: mainAmount
-    });
-  }
-  allItems.push(...items);
-  return allItems;
-}
-
-// Функция для генерации контента для PDF (убрать paddings и margin сверху)
-function buildFullContent(data, items) {
-  const totalAmount= items.reduce((sum, item) => sum + Number(item.amount || 0), 0);
-  const discountPercent=5;
-  const isDiscountApplied=document.getElementById('discountCheckbox').checked;
-  const discountAmount= isDiscountApplied ? (totalAmount*discountPercent)/100 : 0;
-  const totalWithDiscount= totalAmount - discountAmount;
-
-  const itemsRows= items.map( (item, index)=> `
-    <tr>
-      <td>${index+1}</td>
-      <td>${item.serviceName}</td>
-      <td>${item.quantity}</td>
-      <td>${item.unit}</td>
-      <td>${item.amount}</td>
-    </tr>
-  `).join('');
-
-  const discountTable = isDiscountApplied ? `
-    <table style="width:100%; border-collapse: collapse; margin-top:10px;" border="1" cellpadding="5" cellspacing="0">
-      <tbody>
-        <tr>
-          <td style="text-align:center;">Сумма с учетом скидки при карте №</td>
-          <td style="text-align:center;">${discountPercent}%</td>
-          <td style="text-align:center;">${totalWithDiscount.toFixed(2)}</td>
-        </tr>
-      </tbody>
-    </table>
-  ` : '';
-
-  const totalSumDisplay = isDiscountApplied ? totalWithDiscount.toFixed(2) : totalAmount.toFixed(2);
-
-  return `
-<div style="padding:0 30px">
-  <!-- Начинается с верха, без внутренних отступов -->
-     <div style="display:flex;justify-content: space-between;align-items:center; ">
-
-      
-          <div>
-            <p style="margin:0;">АКТ № 1 ОТ ${data.day} ${data.monthLong} ${data.year} г.</p>
-            <p style="margin:0;">Исполнитель ИП Михайлов Александр Андреевич<br>
-            ИНН 590613985887 ОГРНИП 305590609000010 тел.271-81-41</p>
-      
-          </div>
-
-          <p>
-              ☎ 8 342 246 12 09<br>
-              ☎ 8 342 271 81 41<br>
-              ✉ Samosvalchikf@gmail.com<br>
-              🌐 samosvalchik.rf
-          </p>
-      </div>
-
-
-  <!-- Таблица товаров -->
-  <div style="style="margin-top:10px;">
-    <table style="width:100%; border-collapse: collapse;" border="1" cellpadding="5" cellspacing="0">
-      <thead>
-        <tr>
-          <th>№</th>
-          <th>Наим</th>
-          <th>Кол-во</th>
-          <th>Ед</th>
-          <th>Сумма</th>
-        </tr>
-      </thead>
-      <tbody>
-        ${itemsRows}
-      </tbody>
-      ${discountTable}
-    </table>
-  </div>
-
-  <!-- Итог -->
-  <p>Общая сумма без скидки и НДС: <u>${totalAmount.toFixed(2)}</u> руб.</p>
-  <p>ИТОГ: <u>${totalSumDisplay}</u> руб.</p>
-
-  <p>Вышеперечисленные услуги выполнены полностью и в срок. Заказчик претензий по объему, качеству и срокам оказания услуг не имеет.</p>
-
-
-
-  <div style="display:flex; justify-content: space-between; margin-top:20px; width:100%;">
-    <div style="width:45%; display:flex;">
-      <div>ВОДИТЕЛЬ <br>ИСПОЛНИТЕЛЬ  <br> ЛОГИСТ</div>
-      <div style="border-top:1px solid #000; margin-top:10px;width:120%">&nbsp;</div>
-      
-    </div>
-    <div style="width:45%; text-align:center;">
-      <div style="border-top:1px solid #000; margin-top:10px;">&nbsp;</div>
-      <div>ЗАКАЗЧИК</div>
-    </div>
-  </div>
-
-  <p style="margin-top:10px;">*Просим ответить на вопрос:</p>
-  
-  <div style="display:flex">
-      <div>Откуда узнали о нашей компании?</div>
-      <div>__________________________________________________</div>
-  </div>
-
-  <p style="margin-top:10px;">Перевод 8-908-271-81-41 Александр Андреевич М.(Сбербанк)</p>
-</div>
-<div style="padding:0 30px">
-  
-  <!-- Начинается с верха, без внутренних отступов -->
-  
- <div>_______________________________________________________________________________________________</div>
-      
-          <div>
-            <p style="margin:10;">АКТ № 1 ОТ ${data.day} ${data.monthLong} ${data.year} г.</p>
-            <p style="margin:0;">Исполнитель ИП Михайлов Александр Андреевич<br>
-            ИНН 590613985887 ОГРНИП 305590609000010 тел.271-81-41</p>
-      
-          </div>
-
-      
-
-
-  <!-- Таблица товаров -->
-  <div style="style="margin-top:10px;">
-    <table style="width:100%; border-collapse: collapse;" border="1" cellpadding="5" cellspacing="0">
-      <thead>
-        <tr>
-          <th>№</th>
-          <th>Наим</th>
-          <th>Кол-во</th>
-          <th>Ед</th>
-          <th>Сумма</th>
-        </tr>
-      </thead>
-      <tbody>
-        ${itemsRows}
-      </tbody>
-      ${discountTable}
-    </table>
-  </div>
-
-  <!-- Итог -->
-  <p>Общая сумма без скидки и НДС: <u>${totalAmount.toFixed(2)}</u> руб.</p>
-  <p>ИТОГ: <u>${totalSumDisplay}</u> руб.</p>
-
-  <p>Вышеперечисленные услуги выполнены полностью и в срок. Заказчик претензий по объему, качеству и срокам оказания услуг не имеет.</p>
-
-
-
-  <div style="display:flex; justify-content: space-between; margin-top:20px; width:100%;">
-    <div style="width:45%; display:flex;">
-      <div>ВОДИТЕЛЬ <br>ИСПОЛНИТЕЛЬ  <br> ЛОГИСТ</div>
-      <div style="border-top:1px solid #000; margin-top:10px;width:120%">&nbsp;</div>
-      
-    </div>
-    <div style="width:45%; text-align:center;">
-      <div style="border-top:1px solid #000; margin-top:10px;">&nbsp;</div>
-      <div>ЗАКАЗЧИК</div>
-    </div>
-  </div>
-
-  
-
-  <p style="margin-top:10px;">Перевод 8-908-271-81-41 Александр Андреевич М.(Сбербанк)</p>
-</div>
-`;
-}
-
 function getFormData() {
   const serviceName = document.getElementById('serviceName').value.trim();
   const dateInput = document.getElementById('date').value;
@@ -522,70 +128,149 @@ function getFormData() {
   };
 }
 
-function getAllItems() {
-  const mainServiceName = document.getElementById('serviceName').value.trim();
-  const mainQuantity = document.getElementById('quantity').value;
-  const mainUnit = document.getElementById('unit').value;
-  const mainAmount = document.getElementById('amount').value;
+function buildHtmlContent(data) {
+  return `
+<div style="padding: 0px 30px;">
+  <p style="text-align:center;">АКТ №     1     ОТ       ${data.day}  ${data.monthLong}  ${data.year}г.</p>
+<p>Исполнитель ИП Михайлов Александр Андреевич <br>
+ИНН 590613985887 ОГРНИП 305590609000010 тел.271-81-41</p>
+<table style="width:100%; border-collapse: collapse; margin-top:10px;">
+<tr>
+  <td style="width:50%; vertical-align: top;">
+    <p>Заказчик: ${data.customer}      ${data.address}</p>
+  </td>
+  <td style="width:50%; vertical-align: top; text-align:right;">
+    <p>Телефон заказчика: ${data.customerPhone}</p>
+  </td>
+</tr>
+</table>
 
-  const allItems = [];
-  if (mainServiceName) {
-    allItems.push({
-      serviceName: mainServiceName,
-      quantity: mainQuantity,
-      unit: mainUnit,
-      amount: mainAmount
-    });
-  }
-  allItems.push(...items);
-  return allItems;
+<table style="width:100%; border-collapse: collapse; margin-top:10px;" border="1" cellpadding="5" cellspacing="0">
+<tr>
+  <th>№</th>
+  <th>Наименование</th>
+  <th>Кол-во</th>
+  <th>Ед.</th>
+  <th>Сумма, руб.</th>
+</tr>
+<tr>
+  <td>1</td>
+  <td>${data.serviceName}</td>
+  <td>${data.quantity}</td>
+  <td>${data.unit}</td>
+  <td>${data.amount}</td>
+</tr>
+</table>
+
+<p>Всего оказано услуг на сумму: <u>${data.amount}</u> руб.</p>
+<p>Вышеперечисленные услуги выполнены полностью и в срок. Заказчик претензий по объему, качеству и срокам оказания услуг не имеет.</p>
+
+ <!-- Подписи -->
+  <div style="display:flex; justify-content: space-between; margin-top:20px; width:100%; ">
+    <div style="width:45%; text-align:center;">
+      <div style="border-top:1px solid #000; margin-top:20px;">&nbsp;</div>
+      <div>ВОДИТЕЛЬ, ИСПОЛНИТЕЛЬ, ЛОГИСТ</div>
+    </div>
+    <div style="width:45%; text-align:center;">
+      <div style="border-top:1px solid #000; margin-top:20px;">&nbsp;</div>
+      <div>ЗАКАЗЧИК</div>
+    </div>
+  </div>
+
+  <p style="margin-top:10px;">*Просим ответить на вопрос:</p>
+ <div style="display:flex; justify-content: space-between;">
+  <!-- Важная часть, которая раньше не отображалась -->
+        
+          <p>Откуда узнали о нашей компании?</p>
+          <p>__________________________________________________</p>
+  </div>
+  <p style="margin-top:10px;">Перевод  8- 908-271-81-41 Александр Андреевич М.( Сбербанк)</p>
+</div>
+</div>
+
+
+<p>____________________________________________________________________________________________________</p>
+
+
+<div style="padding: 0px 30px;">
+  <p style="text-align:center;">АКТ №     1     ОТ       ${data.day}  ${data.monthLong}  ${data.year}г.</p>
+<p>Исполнитель ИП Михайлов Александр Андреевич <br>
+ИНН 590613985887 ОГРНИП 305590609000010 тел.271-81-41</p>
+<table style="width:100%; border-collapse: collapse; margin-top:10px;">
+<tr>
+  <td style="width:50%; vertical-align: top;">
+    <p>Заказчик: ${data.customer}      ${data.address}</p>
+  </td>
+  <td style="width:50%; vertical-align: top; text-align:right;">
+    <p>Телефон заказчика: ${data.customerPhone}</p>
+  </td>
+</tr>
+</table>
+
+<table style="width:100%; border-collapse: collapse; margin-top:10px;" border="1" cellpadding="5" cellspacing="0">
+<tr>
+  <th>№</th>
+  <th>Наименование</th>
+  <th>Кол-во</th>
+  <th>Ед.</th>
+  <th>Сумма, руб.</th>
+</tr>
+<tr>
+  <td>1</td>
+  <td>${data.serviceName}</td>
+  <td>${data.quantity}</td>
+  <td>${data.unit}</td>
+  <td>${data.amount}</td>
+</tr>
+</table>
+
+<p>Всего оказано услуг на сумму: <u>${data.amount}</u> руб.</p>
+<p>Вышеперечисленные услуги выполнены полностью и в срок. Заказчик претензий по объему, качеству и срокам оказания услуг не имеет.</p>
+
+ <!-- Подписи -->
+  <div style="display:flex; justify-content: space-between; margin-top:20px; width:100%; ">
+    <div style="width:45%; text-align:center;">
+      <div style="border-top:1px solid #000; margin-top:20px;">&nbsp;</div>
+      <div>ВОДИТЕЛЬ, ИСПОЛНИТЕЛЬ, ЛОГИСТ</div>
+    </div>
+    <div style="width:45%; text-align:center;">
+      <div style="border-top:1px solid #000; margin-top:20px;">&nbsp;</div>
+      <div>ЗАКАЗЧИК</div>
+    </div>
+  </div>
+
+  <p style="margin-top:10px;">Перевод  8- 908-271-81-41 Александр Андреевич М.( Сбербанк)</p>
+</div>
+</div>
+`;
 }
-
-// Функция для предпросмотра и скачивания PDF
-function updatePreview() {
-  const data = getFormData();
-  if (!data) return;
-  const allItems = getAllItems();
-
-  const content = buildFullContent(data, allItems);
-  const container = document.getElementById('pdfPreview');
-  container.innerHTML = '';
-
-  const el = document.createElement('div');
-  el.innerHTML = content;
-
-  const options = {
-    margin: 0,
-    html2canvas: { scale: 2, dpi: 300, useCORS: true },
-    jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
-  };
-
-  html2pdf().set(options).from(el).toPdf().then(function(pdfBlob) {
-    const url = URL.createObjectURL(pdfBlob);
-    const iframe = document.createElement('iframe');
-    iframe.src = url;
-    iframe.style.width = '100%';
-    iframe.style.height = '80vh';
-    iframe.style.border = 'none';
-    container.innerHTML = '';
-    container.appendChild(iframe);
-  }).catch(function(error) {
-    console.error('Ошибка при создании PDF:', error);
-    alert('Не удалось подготовить предпросмотр PDF. Попробуйте еще раз.');
-  });
-}
-
 function downloadPdf() {
   const data = getFormData();
   if (!data) return;
-  const allItems = getAllItems();
-  const content = buildFullContent(data, allItems);
-  const el = document.createElement('div');
-  el.innerHTML = content;
-  html2pdf().set({
-    margin: 0,
-    html2canvas: { scale: 2, dpi: 300, useCORS: true }
-  }).from(el).save(`Акт_${data.formattedDate}.pdf`);
+  const content = buildHtmlContent(data);
+  const element = document.createElement('div');
+  element.innerHTML = content;
+  html2pdf().from(element).save(`Акт_${data.formattedDate}.pdf`);
+}
+
+function previewPdf() {
+  const data = getFormData();
+  if (!data) return;
+  const content = buildHtmlContent(data);
+  const container = document.getElementById('pdfPreview');
+  container.innerHTML = '';
+  const element = document.createElement('div');
+  element.innerHTML = content;
+  html2pdf().from(element).outputPdf().then(function(pdfBlob) {
+    const url = URL.createObjectURL(pdfBlob);
+    // Встроенный просмотр PDF
+    const iframe = document.createElement('iframe');
+    iframe.src = url;
+    iframe.style.width = '100%';
+    iframe.style.height = '400px';
+    container.innerHTML = '';
+    container.appendChild(iframe);
+  });
 }
 </script>
 </body>
