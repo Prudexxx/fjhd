@@ -131,7 +131,7 @@ function getFormData() {
 function buildHtmlContent(data) {
   return `
 <div style="padding:30px;">
-  <h2 style="text-align:center;">АКТ №     1     ОТ       ${data.day}  ${data.monthLong}  ${data.year}г.</h2>
+  <p style="text-align:center;">АКТ №     1     ОТ       ${data.day}  ${data.monthLong}  ${data.year}г.</p>
 <p>Исполнитель ИП Михайлов Александр Андреевич <br>
 ИНН 590613985887 ОГРНИП 305590609000010 тел.271-81-41</p>
 <table style="width:100%; border-collapse: collapse; margin-top:10px;">
@@ -177,17 +177,19 @@ function buildHtmlContent(data) {
     </div>
   </div>
 
-  <!-- Важная часть, которая раньше не отображалась -->
   <p style="margin-top:10px;">*Просим ответить на вопрос:</p>
-  <p>Откуда узнали о нашей компании?</p>
-  <p>__________________________________________________</p>
-
+ <div style="display:flex; justify-content: space-between;">
+  <!-- Важная часть, которая раньше не отображалась -->
+        
+          <p>Откуда узнали о нашей компании?</p>
+          <p>__________________________________________________</p>
+  </div>
   <p style="margin-top:10px;">Перевод  8- 908-271-81-41 Александр Андреевич М.( Сбербанк)</p>
 </div>
 </div>
 
 <div style="padding:30px;">
-  <h2 style="text-align:center;">АКТ №     1     ОТ       ${data.day}  ${data.monthLong}  ${data.year}г.</h2>
+  <p style="text-align:center;">АКТ №     1     ОТ       ${data.day}  ${data.monthLong}  ${data.year}г.</p>
 <p>Исполнитель ИП Михайлов Александр Андреевич <br>
 ИНН 590613985887 ОГРНИП 305590609000010 тел.271-81-41</p>
 <table style="width:100%; border-collapse: collapse; margin-top:10px;">
@@ -224,19 +226,14 @@ function buildHtmlContent(data) {
  <!-- Подписи -->
   <div style="display:flex; justify-content: space-between; margin-top:50px; width:100%; ">
     <div style="width:45%; text-align:center;">
-      <div style="border-top:1px solid #000; margin-top:50px;">&nbsp;</div>
+      <div style="border-top:1px solid #000; margin-top:20px;">&nbsp;</div>
       <div>ВОДИТЕЛЬ, ИСПОЛНИТЕЛЬ, ЛОГИСТ</div>
     </div>
     <div style="width:45%; text-align:center;">
-      <div style="border-top:1px solid #000; margin-top:50px;">&nbsp;</div>
+      <div style="border-top:1px solid #000; margin-top:20px;">&nbsp;</div>
       <div>ЗАКАЗЧИК</div>
     </div>
   </div>
-
-  <!-- Важная часть, которая раньше не отображалась -->
-  <p style="margin-top:10px;">*Просим ответить на вопрос:</p>
-  <p>Откуда узнали о нашей компании?</p>
-  <p>__________________________________________________</p>
 
   <p style="margin-top:10px;">Перевод  8- 908-271-81-41 Александр Андреевич М.( Сбербанк)</p>
 </div>
